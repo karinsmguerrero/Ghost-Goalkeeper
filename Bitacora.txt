@@ -3,8 +3,25 @@ Miércoles 31 de mayo:
 	-Inicio de proyecto
 	-Creación de pantalla principal
 	-Pantalla Acerca de
+----------Eduardo-------------
+	-Inicio de la creacion de la seleccion de jugadores
+	-Se descargan las imagenes 
+
+Viernes 2 de junio:
+---------Eduardo--------------
+	-Se termina la base del funcionamiento de la seleccion de jugadores
+	-Se comienza a colocar las imagenes segun los equipos, junto con sus nombres
+	-Se compran parte de los componentes para la maqueta
+
+Sabado 4 de junio:
+---------Eduardo--------------
+	-Se descargan nuevamente las imagenes debido a que las anteriormente descargadas no funcionaron
+	-Se define el tamaño especifico de las imagenes por utilizar
+	-Se crea un Spritesheet para los porteros y cada uno de los equipos
+
 
 Martes 6 de junio:
 ---------Karina---------------
 	-Elaboración de la maqueta
 	-Creacion del repositorio remoto en GitHub
+	-Se finaliza la seccion de seleccion de jugadores
