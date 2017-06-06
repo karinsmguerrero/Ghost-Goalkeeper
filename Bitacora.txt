@@ -1,0 +1,10 @@
+Miércoles 31 de mayo:
+----------Karina--------------
+	-Inicio de proyecto
+	-Creación de pantalla principal
+	-Pantalla Acerca de
+
+Martes 6 de junio:
+---------Karina---------------
+	-Elaboración de la maqueta
+	-Creacion del repositorio remoto en GitHub
