@@ -110,37 +110,44 @@ class Image(pg.sprite.Sprite):
         Real= REAL
         Realsheet= Spritesheet(Real)
 
-        #Barcelona= BARCELONA
-        #Bar_sheet= Spritesheet(Barcelona)
+        Barcelona= BARCELONA
+        Bar_sheet= Spritesheet(Barcelona)
 
-        #Bayern= BAYERN
-        #Bayern_sheet= Spritesheet(Bayern)
+        Bayern= BAYERN
+        Bayern_sheet= Spritesheet(Bayern)
 
         Keepers= KEEPERS
         Keeper_sheet= Spritesheet(Keepers)
 
                             #Barcelona
-        self.player_images=[[],
+        self.player_images=[[Bar_sheet.get_image(0,0,418,413), Bar_sheet.get_image(893,0,418,413),
+                            Bar_sheet.get_image(1901,0,418,413),Bar_sheet.get_image(2593,0,418,413),
+                            Bar_sheet.get_image(3681,0,418,413),Bar_sheet.get_image(4639,0,418,413),
+                            Bar_sheet.get_image(5281,0,418,413)],
                             #Real Madrid
                             [Realsheet.get_image(0,0,418,413),Realsheet.get_image(421,0,418,413),
                             Realsheet.get_image(876,0,418,413),Realsheet.get_image(1319,0,418,413),
                             Realsheet.get_image(1758,0,418,413),Realsheet.get_image(2176,0,418,413),
                             Realsheet.get_image(2597,0,418,413)],
                             #Bayern
-                            []]
+                            [Bayern_sheet.get_image(0,0,418,413),Bayern_sheet.get_image(691,0,418,413),Bayern_sheet.get_image(1397,0,418,413),Bayern_sheet.get_image(1995,0,418,413),Bayern_sheet.get_image(2641,0,418,413),Bayern_sheet.get_image(3323,0,418,413),Bayern_sheet.get_image(4113,0,418,413)]]
+
                             #Barcelona
-        self.keeper_images=[[],
+        self.keeper_images=[[Keeper_sheet.get_image(1800,0,418,413),Keeper_sheet.get_image(2464,0,418,413                    ), Keeper_sheet.get_image(3339,0,418,413)],
                             #Real Madrid
                             [Keeper_sheet.get_image(0,0,418,413),Keeper_sheet.get_image(431,0,418,413),
                             Keeper_sheet.get_image(1210,2,418,413)],
                             #Bayern
-                            []]
+                            [Keeper_sheet.get_image(4091,0,418,413),Keeper_sheet.get_image(4771,0,418,413),Keeper_sheet.get_image(6073,0,418,413)]]
 
 
-
-
+        for image in self.player_images[0]:
+            image.set_colorkey(COLORKEY)
 
         for image in self.player_images[1]:
+            image.set_colorkey(COLORKEY)
+
+        for image in self.player_images[2]:
             image.set_colorkey(COLORKEY)
 
         for image in self.keeper_images[1]:

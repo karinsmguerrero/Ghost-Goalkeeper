@@ -116,14 +116,14 @@ class Game:
 
         if self.selector.selecting_keeper and not self.showing:
             self.draw_text(self.text_list[2],40,WHITE,350,10)
-            self.draw_text(Keeper_Names[self.selector.col],40,WHITE,350,60)
+            self.draw_text(Keeper_Names[self.selector.fil][self.selector.col],40,WHITE,350,60)
             self.selection_sprites.draw(self.screen)
             pg.display.flip()
 
 
         elif self.selecting_player and not self.showing:
             self.draw_text(self.text_list[self.text_ind],40,WHITE,350,10)
-            self.draw_text(Player_Names[self.selector.col],40,WHITE,350,60)
+            self.draw_text(Player_Names[self.selector.fil][self.selector.col],40,WHITE,350,60)
             self.selection_sprites.draw(self.screen)
             pg.display.flip()
         elif self.showing:
