@@ -1,4 +1,5 @@
 import pygame
+from Seleccion.Main import Game
 
 # Inicia modulo de pygame
 pygame.init()
@@ -28,6 +29,7 @@ Medium_Text = pygame.font.Font('Fonts/Exo-Medium.otf', 18)
 Large_Text = pygame.font.Font('Fonts/Exo-Medium.otf', 26)
 
 Clock = pygame.time.Clock()
+GameClass = Game()
 #endregion
 
 # ------------------------------ IMAGENES ---------------------------------
@@ -70,9 +72,9 @@ def game_menu():
     #pygame.mixer.music.load('Sounds/UEFA_Champions_League_Anthem.ogg')
 
     # comprueba que no haya musica reproduciendose
-    if pygame.mixer.music.get_busy() == False:
+    #if pygame.mixer.music.get_busy() == False:
     # reproduce la musica, el -1 hace el bucle infinito
-        pygame.mixer.music.play(-1)
+     #   pygame.mixer.music.play(-1)
 
     GameDisplay.blit(Background, (0, 0))
 
@@ -87,7 +89,7 @@ def game_menu():
 
             message_display('Ghost Goalkeeper', Title_Text, Display_width // 2, Display_height // 3)
 
-            button("Nueva partida", (Display_width // 2 - 100), 400, 200, 50, Dark_blue, Blue, game_start())
+            button("Nueva partida", (Display_width // 2 - 100), 400, 200, 50, Dark_blue, Blue, game_settings)
 
         # actualizar la pantalla
 
@@ -116,18 +118,17 @@ def game_exit_confirmation():
             # reloj que controla los frames-per-second
             Clock.tick(30)
 
-
 def game_exit():
     pygame.mixer.music.stop()
     pygame.quit()
     quit()
 
-
 def game_about():
     """ Objetivo: funcion que crea una ventana con informacion acerca del juego"""
 
     Display = True
-    #Photo_Karina = pygame.image.load("Imgs/photo_karina.png")
+    Photo_Karina = pygame.image.load("Imgs/photo_karina.png")
+    Photo_Eduardo = pygame.image.load("Imgs/photo_eduardo.png")
     while Display:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -138,23 +139,23 @@ def game_about():
             button("Inicio", 0, 0, 100, 50, Sky_blue, Dark_blue, game_menu)
             button("Acerca de", 100, 0, 100, 50, Sky_blue, Dark_blue, game_about)
 
-            message_display('Instituto Tecnológico de Costa rica', Small_Text, Display_width // 2, 200)
-            message_display('Ingeniería en computadores', Small_Text, Display_width // 2, 220)
-            message_display('Profesor Milton Villegas Lemus', Small_Text, Display_width // 2, 240)
-            message_display('Karina Martínez Guerrero', Small_Text, Display_width // 2, 260)
-            message_display('2017102001', Small_Text, Display_width // 2, 280)
-            message_display('Eduardo Quiroga ...', Small_Text, Display_width // 2, 300)
-            message_display('2017...', Small_Text, Display_width // 2, 320)
-            message_display('V 1.0', Small_Text, Display_width // 2, 340)
-            message_display('Última modificación: 15/05/2017', Small_Text, Display_width // 2, 360)
+            message_display('Instituto Tecnológico de Costa rica', Small_Text, Display_width // 2, 100)
+            message_display('Ingeniería en computadores', Small_Text, Display_width // 2, 120)
+            message_display('Profesor Milton Villegas Lemus', Small_Text, Display_width // 2, 140)
+            message_display('Karina Martínez Guerrero', Small_Text, Display_width // 2, 160)
+            message_display('2017102001', Small_Text, Display_width // 2, 180)
+            message_display('Eduardo Quiroga Alfaro', Small_Text, Display_width // 2, 200)
+            message_display('2017079534', Small_Text, Display_width // 2, 220)
+            message_display('V 1.0', Small_Text, Display_width // 2, 240)
+            message_display('Última modificación: 00/06/2017', Small_Text, Display_width // 2, 260)
 
-            #GameDisplay.blit(Photo_Karina, (200, 360))
+            GameDisplay.blit(Photo_Karina, (200, 280))
+            GameDisplay.blit(Photo_Eduardo, (400, 280))
 
         # actualizar la pantalla
         pygame.display.update()
         # reloj que controla los frames-per-second  
         Clock.tick(30)
-
 
 def button(Text, X_coord, Y_coord, Btn_width, Btn_height, Color, Hover_color, Action=None):
     """ Objetivo: funcion que recrea el comportamiento de un botón
@@ -183,7 +184,6 @@ def button(Text, X_coord, Y_coord, Btn_width, Btn_height, Color, Hover_color, Ac
     textRect.center = ((X_coord + (Btn_width / 2)), (Y_coord + (Btn_height / 2)))
     GameDisplay.blit(textSurf, textRect)
 
-
 def message_display(text, size, x_center, y_center):
     """ Objetivo: funcion que recibe una cadena de texto, la convierte en texto y la presenta en un rectangulo
             Entradas: texto con el mensaje, tamaño y fuente del texto, coordenada x del centro, coordenada y del texto
@@ -200,7 +200,6 @@ def message_display(text, size, x_center, y_center):
 
     pygame.display.update()
 
-
 def text_objects(text, font):
     """ Objetivo: funcion que toma el texto y lo presenta como imagen
             Entradas: texto con el mensaje, tamaño y fuente del texto
@@ -213,9 +212,12 @@ def text_objects(text, font):
 
 #endregion
 
-
 def game_start():
     pass
 
+def game_settings():
+    GameClass.waiting = True
+    while GameClass.running:
+        GameClass.new()
 #-----------------MAIN-------------------------------
 game_menu()

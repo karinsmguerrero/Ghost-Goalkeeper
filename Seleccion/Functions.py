@@ -1,5 +1,7 @@
 import pygame as pg
 
+pg.init()
+
 #Todas estas funciones trabajan con objetos
 
 def draw_text(self, text, size, color, x, y): #Funcion para crear texto

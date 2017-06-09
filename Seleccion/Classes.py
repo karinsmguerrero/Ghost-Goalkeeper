@@ -1,12 +1,13 @@
 "Classes"
 import pygame as pg
 import random
-from Functions import *
-from Settings import *
+from Seleccion.Functions import *
+from Seleccion.Settings import *
 vec= pg.math.Vector2
 
-
-
+class Referee:
+    def __init__(self, Name):
+        self.Name = Name
 
 class Team:
     def __init__(self,Name, Players, Keepers):
@@ -30,7 +31,6 @@ class Team:
             self.keeping.append(self.keepers[Num])
         else:
             return "You already have a keeper!"
-
 
 class Player:
     def __init__(self,Name, Number, Tag=""):
@@ -83,6 +83,7 @@ class Image(pg.sprite.Sprite):
         self.fil=0
         self.col= 0
         self.selecting_keeper= False
+        self.selecting_referee = False
         self.load_images()
         self.image= self.images_list[self.ind]
         self.image.set_colorkey(RED)
@@ -95,16 +96,22 @@ class Image(pg.sprite.Sprite):
         self.team=[]
         self.selected=[]
         self.keepers=[]
+        self.Referees = []
 
     def load_images(self):
         #Logos
-        Logos=LOGOS
+        #Logos=LOGOS
+        Logos = "Imgs/logo_sheet1.png"
         Logosheet= Spritesheet(Logos)
-        self.images_list=[Logosheet.get_image(2,0,418,413),
-        Logosheet.get_image(451,0,418,413),
-        Logosheet.get_image(1223,8,418,413)]
+        #self.images_list=[Logosheet.get_image(2,0,418,413),
+        #Logosheet.get_image(451,0,418,413),
+        #Logosheet.get_image(1223,8,418,413)]
+        self.images_list = [Logosheet.get_image(0, 0, 400, 400),
+                            Logosheet.get_image(400, 0, 400, 400),
+                            Logosheet.get_image(800, 0, 400, 400)]
         for image in self.images_list:
             image.set_colorkey(RED)
+            #image.set_colorkey((0,0,255))
 
         #Jugadores
         Real= REAL
@@ -119,6 +126,8 @@ class Image(pg.sprite.Sprite):
         Keepers= KEEPERS
         Keeper_sheet= Spritesheet(Keepers)
 
+        #referees
+        Referee_sheet = Spritesheet(REFEREES)
                             #Barcelona
         self.player_images=[[Bar_sheet.get_image(0,0,418,413), Bar_sheet.get_image(893,0,418,413),
                             Bar_sheet.get_image(1901,0,418,413),Bar_sheet.get_image(2593,0,418,413),
@@ -140,6 +149,8 @@ class Image(pg.sprite.Sprite):
                             #Bayern
                             [Keeper_sheet.get_image(4091,0,418,413),Keeper_sheet.get_image(4771,0,418,413),Keeper_sheet.get_image(6073,0,418,413)]]
 
+        self.Referee_images = [Referee_sheet.get_image(0, 0, 200, 200), Referee_sheet.get_image(200, 0, 200, 200)]
+
 
         for image in self.player_images[0]:
             image.set_colorkey(COLORKEY)
@@ -153,7 +164,8 @@ class Image(pg.sprite.Sprite):
         for image in self.keeper_images[1]:
             image.set_colorkey(COLORKEY)
 
-
+        for image in self.Referee_images:
+            image.set_colorkey(COLORKEY)
 
     def animate_right(self):
         keys= pg.key.get_pressed()
@@ -186,6 +198,14 @@ class Image(pg.sprite.Sprite):
             else:
                 self.col+=1
                 self.image=self.player_images[self.fil][self.col]
+        elif self.Selecting_referee:
+            if self.ind == len(self.Referee_images ) - 1:
+                self.ind = 0
+                self.image = self.Referee_images[self.ind]
+                print(self.ind)
+            else:
+                self.ind += 1
+                self.image = self.Referee_images[self.ind]
 
     def animate_left(self):
         keys= pg.key.get_pressed()
@@ -218,9 +238,16 @@ class Image(pg.sprite.Sprite):
             else:
                 self.col-=1
                 self.image=self.player_images[self.fil][self.col]
+        elif self.Selecting_referee:
+            if self.ind == 0:
+                self.ind = len(self.Referee_images ) - 1
+                self.image = self.Referee_images[self.ind]
+                print(self.ind)
+            else:
+                self.ind -= 1
+                self.image = self.Referee_images[self.ind]
 
     def selection(self):
-
         keys= pg.key.get_pressed()
         now= pg.time.get_ticks()
 
@@ -228,7 +255,9 @@ class Image(pg.sprite.Sprite):
             if len(self.keepers)<1:
                 self.keepers.append(self.col)
             else:
-                self.game.showing= True
+                self.selecting_keeper = False
+                self.select_referee()
+                self.game.Selecting_referee= True
 
         elif self.game.selecting and not self.game.selecting_player:
 
@@ -246,7 +275,6 @@ class Image(pg.sprite.Sprite):
 
 
         elif self.game.selecting_player:
-
             if len(self.team)==2 and (self.col!=self.team[-1] and self.col!=self.team[-2]):
                 self.team.append(self.col)
                 self.game.text_ind=-1
@@ -269,11 +297,25 @@ class Image(pg.sprite.Sprite):
             elif len(self.team)==3:
                 self.select_keeper()
                 self.selecting_keeper=True
+        #seleccionar un arbitro
+        elif self.game.Selecting_referee:
+            if len(self.Referees)<1:
+                self.Referees.append(self.ind)
+                self.game.header="Press Space to confirm!"
+
+            elif len(self.Referees)==1:
+                self.game.text_ind=6
+                self.game.showing=True
+                print(self.Referees, "Referee")
 
 
     def select_keeper(self):
         self.col=0
         self.image=self.keeper_images[self.fil][self.col]
+
+    def select_referee(self):
+        self.col = 0
+        self.image = self.Referee_images[self.col]
 
     def scroll(self):
         keys= pg.key.get_pressed()
@@ -292,12 +334,6 @@ class Image(pg.sprite.Sprite):
             else:
                 self.image=self.player_images[self.fil][self.team[self.scroll_ind]]
                 self.scroll_ind+=1
-
-
-
-
-
-
 
 """
             if keys[pg.K_BACKSPACE] and now- self.timer>250:
