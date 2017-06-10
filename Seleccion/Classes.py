@@ -221,6 +221,8 @@ class Image(pg.sprite.Sprite):
         if self.selecting_keeper:
             if len(self.keepers) < 1:
                 self.keepers.append(self.col)
+                self.game.text_ind=-1
+
             else:
                 self.game.showing = True
 
@@ -260,9 +262,9 @@ class Image(pg.sprite.Sprite):
                     self.game.text_ind = 1
 
             elif len(self.team) == 3:
+                self.game.text_ind=2
                 self.select_keeper()
                 self.selecting_keeper = True
-
     def select_keeper(self):
         self.col = 0
         self.image = self.keeper_images[self.fil][self.col]
@@ -270,13 +272,14 @@ class Image(pg.sprite.Sprite):
     def scroll(self):
         keys= pg.key.get_pressed()
         now= pg.time.get_ticks()
-        self.game.header="These are your players!"
-        if keys[pg.K_SPACE]:
-            self.finished = True
-        if now- self.timer>500:
+        self.game.header="Player 2: Select your players!"
+
+        if now- self.timer>0:
             self.timer= now
+
             if keys[pg.K_SPACE]:
                 self.finished = True
+"""
             if self.scroll_ind==0:
                 self.image=self.player_images[self.fil][self.team[self.scroll_ind]]
                 self.scroll_ind+=1
@@ -288,87 +291,4 @@ class Image(pg.sprite.Sprite):
             else:
                 self.image=self.player_images[self.fil][self.team[self.scroll_ind]]
                 self.scroll_ind+=1
-
 """
-            if keys[pg.K_BACKSPACE] and now- self.timer>250:
-                self.game.timer= now
-
-                if len(self.selected)==0:
-                    pass
-                else:
-                    self.selected.remove(self.selected[-1])
-
-            if keys[pg.K_m] and now - self.timer>250:
-                self.game.timer= now
-
-                print(self.selected)
-"""
-
-class player(pg.sprite.Sprite): #Crea el jugador
-
-    def __init__(self,game): #Asignacion de las variables necesarias para el funcionamiento
-        pg.sprite.Sprite.__init__(self)
-        self.game = game
-        self.changing= False
-        self.current_frame= 0
-        self.last_update= 0
-        self.last_dir=0
-
-        self.load_images()
-
-        self.image= self.right_frames[self.current_frame]
-
-        self.rect= self.image.get_rect()
-        self.rect.center=(300,300)
-        self.pos= vec(300,300)
-        self.vel= vec(0,0)
-        self.acc= vec(0,0)
-
-    def load_images(self): #Carga todas las imagenes de los movimientos del jugador
-
-        self.right_frames = [Image1.get_image(0,0,372,572), Image2.get_image(0,0,372,572)]
-
-        self.left_frames = [Image1.get_image(0,0,372,572), Image2.get_image(0,0,372,572)]
-
-
-    def animate(self): #Animacion del jugador
-        now = pg.time.get_ticks()
-
-        if self.changing:
-            if now - self.last_update>100:
-                self.last_update=now
-                self.current_frame= (self.current_frame + 1) % len(self.right_frames)
-                if self.vel.x > 0:
-                    self.image= self.right_frames[self.current_frame]
-                else:
-                    self.image= self.left_frames[self.current_frame]
-
-        if not self.walking and not self.jumping:
-            if now - self.last_update > 100:
-                self.last_update = now
-                self.current_frame = 0
-                if self.last_dir==0:
-                    self.image = self.right_frames[0]
-                else:
-                    self.image = self.left_frames[0]
-
-                    #Credito al canal KidsCanCode
-
-    def update(self): #Actualiza el jugador en movimientos
-        self.animate()
-        self.acc= vec(0,0)
-        keys= pg.key.get_pressed()
-
-        if keys[pg.K_LEFT]:
-            self.changing
-            self.last_dir=1
-
-        if keys[pg.K_RIGHT]:
-            self.changing
-            self.last_dir=0
-
-        self.acc += self.vel * PLAYER_FRICC
-        self.vel += self.acc
-        if abs(round(self.vel.x,5)) <  0.1 :
-            self.vel.x=0
-            self.walking=False

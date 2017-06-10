@@ -83,7 +83,7 @@ class Game:
                 self.text_ind=4
             else:
                 pass
-
+        pass
     def events(self):
         keys = pg.key.get_pressed()
         now = pg.time.get_ticks()
@@ -106,6 +106,7 @@ class Game:
         elif self.selector.selecting_keeper and not self.showing:
             if keys[pg.K_SPACE]:
                 self.selector.select_keeper()
+                self.text_ind+=1
 
         elif self.showing:
             if keys[pg.K_SPACE] and not self.selector.selecting_keeper:
@@ -113,11 +114,12 @@ class Game:
                 self.selector.selecting_keeper = True
 
 
+
     def draw(self):
         self.screen.blit(pg.image.load(Background_img), (0, 0))
 
         if self.selector.selecting_keeper and not self.showing:
-            self.draw_text(self.text_list[2], 40, WHITE, WIDTH//2, 10)
+            self.draw_text(self.text_list[self.text_ind], 40, WHITE, WIDTH//2, 10)
             self.draw_text(Keeper_Names[self.selector.fil][self.selector.col], 40, WHITE, WIDTH//2, 50)
             self.selection_sprites.draw(self.screen)
             pg.display.flip()

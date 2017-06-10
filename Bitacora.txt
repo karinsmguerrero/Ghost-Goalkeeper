@@ -32,3 +32,12 @@ Viernes 9 de junio:
 	-Seleccion de arbitros
 	-Mejoras a la interfaz de seleccion de equipos
 	-Seleccion de modo de cambio
+---------Eduardo--------------
+	-Se hacen correciones a la programacion para la primera entrega
+	-Se comienza la construccion de los circuitos
+	-Se prueban circuitos varios en la breadboard
+
+Sabado 10 de junio:
+---------Eduardo--------------
+	-Primera revision
+

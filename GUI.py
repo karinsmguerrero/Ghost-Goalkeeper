@@ -50,7 +50,7 @@ def game_menu():
                 Nombre del programa: Ghost Goalkeeper
                 Autores:
                     Karina Martínez Guerrero
-                    Eduardo Quiroga ...
+                    Eduardo Quiroga Alfaro
                 Profesor: Milton Villegas Lemus
                 Lenguaje: Python 3.6
                 Version de Pygame: 1.9.3
@@ -156,7 +156,7 @@ def game_about():
 
         # actualizar la pantalla
         pygame.display.update()
-        # reloj que controla los frames-per-second  
+        # reloj que controla los frames-per-second
         Clock.tick(30)
 
 def button(Text, X_coord, Y_coord, Btn_width, Btn_height, Color, Hover_color, Action=None):
@@ -217,10 +217,10 @@ def text_objects(text, font):
 def game_start(player1, player2, change_mode):
     running = True
     GameDisplay.blit(Background, (0, 0))
-    message_display("Game Seetings", Large_Text, Display_width // 2, 30)
+    message_display("Game Settings", Large_Text, Display_width // 2, 30)
     #carga el spritesheet de los logos, importado de settings
     logo_sheet = pygame.image.load("Imgs/mini_logo_sheet.png")
-    logo_sheet.set_colorkey(RED)
+    logo_sheet.set_colorkey((255,9,255))
     message_display("Player 1", Large_Text, 200, 100)
     message_display("Player 2", Large_Text, 600, 100)
     player1_logo = player1[0][0]
@@ -314,12 +314,14 @@ def game_change_selector():
 def select_referee():
     Referee_Names = ["Karina Martínez", "Eduardo Quiroga"]
     Referee_sheet = pygame.image.load("Imgs/referee_sheet.png")
-    Referee_sheet.set_colorkey((255,0,0))
+    Referee_sheet.set_colorkey((255,9,255))
 
     pos = 0
     running = True
     GameDisplay.blit(Background, (0, 0))
     message_display("Select a referee!",Large_Text, Display_width//2, 20)
+    GameDisplay.blit(Referee_sheet, (Display_width//2 - 200,70), (400 * pos, 0, 400,400))
+    message_display(Referee_Names[pos], Large_Text, Display_width//2, 50)
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -331,7 +333,7 @@ def select_referee():
                     else:
                         pos = 0
                     GameDisplay.blit(Background, (0, 0))
-                    message_display(Referee_Names[pos], Large_Text, Display_width//2, 40)
+                    message_display(Referee_Names[pos], Large_Text, Display_width//2, 50)
                     GameDisplay.blit(Referee_sheet, (Display_width//2 - 200,70), (400 * pos, 0, 400,400))
                 elif event.key == pygame.K_RIGHT:
                     if pos == 1:
@@ -339,7 +341,7 @@ def select_referee():
                     else:
                         pos = 1
                     GameDisplay.blit(Background, (0, 0))
-                    message_display(Referee_Names[pos], Large_Text, Display_width // 2, 40)
+                    message_display(Referee_Names[pos], Large_Text, Display_width // 2, 50)
                     GameDisplay.blit(Referee_sheet, (Display_width//2 - 200,70), (400 * pos, 0, 400, 400))
                 elif event.key == pygame.K_SPACE:
                     return Referee_Names[pos]
@@ -375,3 +377,4 @@ game_menu()
 #select_referee()
 #game_start([0, [1,2,3],1],[2, [1,2,3], 0])
 #game_change_selector()
+
