@@ -25,3 +25,14 @@ Martes 6 de junio:
 	-Elaboración de la maqueta
 	-Creacion del repositorio remoto en GitHub
 	-Se finaliza la seccion de seleccion de jugadores
+
+
+Viernes 9 de junio:
+---------Eduardo--------------
+	-Se hacen correciones a la programacion para la primera entrega
+	-Se comienza la construccion de los circuitos
+	-Se prueban circuitos varios en la breadboard
+
+Sabado 10 de junio:
+---------Eduardo--------------
+	-Primera revision
