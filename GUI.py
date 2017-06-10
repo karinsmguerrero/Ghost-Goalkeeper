@@ -1,5 +1,7 @@
 import pygame
 from Seleccion.Main import Game
+from Seleccion.Settings import *
+from Seleccion.Classes import Referee
 
 # Inicia modulo de pygame
 pygame.init()
@@ -212,12 +214,108 @@ def text_objects(text, font):
 
 #endregion
 
-def game_start():
-    pass
+def game_start(player1, player2):
+    running = True
+    GameDisplay.blit(Background, (0, 0))
+    message_display("Game Seetings", Large_Text, Display_width // 2, 30)
+    #carga el spritesheet de los logos, importado de settings
+    logo_sheet = pygame.image.load("Imgs/mini_logo_sheet.png")
+    logo_sheet.set_colorkey(RED)
+    message_display("Player 1", Large_Text, 200, 100)
+    message_display("Player 2", Large_Text, 600, 100)
+    player1_logo = player1[0][0]
+    player2_logo = player2[0][0]
+
+    player1_team = player1[1]
+    player2_team = player2[1]
+
+    player1_keeper = player1[2]
+    player2_keeper = player2[2]
+    print(player1_logo, player1_team, player1_keeper)
+
+    # Despliega el logo del equipo seleccionado por el jugador 1
+    GameDisplay.blit(logo_sheet, (100, 130), (player1_logo * 200, 0, 200, 200))
+    # Despliega los nombres de los jugadores, obteniendolos de una matriz importada de Settings
+    message_display(Player_Names[player1_logo][player1_team[0]], Large_Text, 200, 360)
+    message_display(Player_Names[player1_logo][player1_team[1]], Large_Text, 200, 390)
+    message_display(Player_Names[player1_logo][player1_team[2]], Large_Text, 200, 420)
+    message_display(Keeper_Names[player1_logo][player1_keeper[0]], Large_Text, 200, 460)
+
+    # Despliega el logo del equipo seleccionado por el jugador 1
+    GameDisplay.blit(logo_sheet, (500, 130), (player2_logo * 200, 0, 200, 200))
+    # Despliega los nombres de los jugadores, obteniendolos de una matriz importada de Settings
+    message_display(Player_Names[player2_logo][player1_team[0]], Large_Text, 600, 360)
+    message_display(Player_Names[player2_logo][player2_team[1]], Large_Text, 600, 390)
+    message_display(Player_Names[player2_logo][player2_team[2]], Large_Text, 600, 420)
+    message_display(Keeper_Names[player2_logo][player2_keeper[0]], Large_Text, 600, 460)
+
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                game_exit()
+        pygame.display.update()
+        Clock.tick(30)
+
+def select_referee():
+    Referee_Names = ["Karina Martínez", "Eduardo Quiroga"]
+    Referee_sheet = pygame.image.load("Imgs/referee_sheet.png")
+    Referee_sheet.set_colorkey((255,0,0))
+
+    pos = 0
+    running = True
+    GameDisplay.blit(Background, (0, 0))
+    message_display("Select a referee!",Large_Text, Display_width//2, 20)
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                game_exit()
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LEFT:
+                    if pos == 0:
+                        pos = 1
+                    else:
+                        pos = 0
+                    GameDisplay.blit(Background, (0, 0))
+                    message_display(Referee_Names[pos], Large_Text, Display_width//2, 40)
+                    GameDisplay.blit(Referee_sheet, (Display_width//2 - 200,70), (400 * pos, 0, 400,400))
+                elif event.key == pygame.K_RIGHT:
+                    if pos == 1:
+                        pos = 0
+                    else:
+                        pos = 1
+                    GameDisplay.blit(Background, (0, 0))
+                    message_display(Referee_Names[pos], Large_Text, Display_width // 2, 40)
+                    GameDisplay.blit(Referee_sheet, (Display_width//2 - 200,70), (400 * pos, 0, 400, 400))
+                elif event.key == pygame.K_SPACE:
+                    return Referee_Names[pos]
+        pygame.display.update()
+        Clock.tick(30)
 
 def game_settings():
-    GameClass.waiting = True
+    GameClass.REFEREE = select_referee()
+    current_player = 1
+    player_1_team = []
+    player_2_team = []
     while GameClass.running:
+        if current_player == 2:
+            if GameClass.finish:
+                player_2_team.append(GameClass.selector.selected)
+                player_2_team.append(GameClass.selector.team)
+                player_2_team.append(GameClass.selector.keepers)
+                print(player_2_team)
+                game_start(player_1_team, player_2_team)
+
         GameClass.new()
+
+        if GameClass.finish:
+            player_1_team.append(GameClass.selector.selected)
+            player_1_team.append(GameClass.selector.team)
+            player_1_team.append(GameClass.selector.keepers)
+            print(player_1_team)
+            GameClass.new()
+            current_player = 2
+
 #-----------------MAIN-------------------------------
 game_menu()
+#select_referee()
+#game_start([0, [1,2,3],1],[2, [1,2,3], 0])

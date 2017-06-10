@@ -81,12 +81,12 @@ class Image(pg.sprite.Sprite):
         self.team= Team
         self.ind=0
         self.fil=0
+        self.selecting_keeper = False
         self.col= 0
-        self.selecting_keeper= False
-        self.selecting_referee = False
         self.load_images()
         self.image= self.images_list[self.ind]
         self.image.set_colorkey(RED)
+        self.finished = False
 
         pg.transform.scale(self.image,(40,40))
 
@@ -96,7 +96,6 @@ class Image(pg.sprite.Sprite):
         self.team=[]
         self.selected=[]
         self.keepers=[]
-        self.Referees = []
 
     def load_images(self):
         #Logos
@@ -126,8 +125,6 @@ class Image(pg.sprite.Sprite):
         Keepers= KEEPERS
         Keeper_sheet= Spritesheet(Keepers)
 
-        #referees
-        Referee_sheet = Spritesheet(REFEREES)
                             #Barcelona
         self.player_images=[[Bar_sheet.get_image(0,0,418,413), Bar_sheet.get_image(893,0,418,413),
                             Bar_sheet.get_image(1901,0,418,413),Bar_sheet.get_image(2593,0,418,413),
@@ -149,8 +146,6 @@ class Image(pg.sprite.Sprite):
                             #Bayern
                             [Keeper_sheet.get_image(4091,0,418,413),Keeper_sheet.get_image(4771,0,418,413),Keeper_sheet.get_image(6073,0,418,413)]]
 
-        self.Referee_images = [Referee_sheet.get_image(0, 0, 200, 200), Referee_sheet.get_image(200, 0, 200, 200)]
-
 
         for image in self.player_images[0]:
             image.set_colorkey(COLORKEY)
@@ -164,171 +159,130 @@ class Image(pg.sprite.Sprite):
         for image in self.keeper_images[1]:
             image.set_colorkey(COLORKEY)
 
-        for image in self.Referee_images:
-            image.set_colorkey(COLORKEY)
-
     def animate_right(self):
-        keys= pg.key.get_pressed()
-        now= pg.time.get_ticks()
+        keys = pg.key.get_pressed()
+        now = pg.time.get_ticks()
 
         if self.selecting_keeper:
-            if self.col == len(self.keeper_images[self.fil])-1:
-                self.col=0
-                self.image=self.keeper_images[self.fil][self.col]
-                print(self.col)
+            if self.col == len(self.keeper_images[self.fil]) - 1:
+                self.col = 0
+                self.image = self.keeper_images[self.fil][self.col]
             else:
-                self.col+=1
-                self.image=self.keeper_images[self.fil][self.col]
+                self.col += 1
+                self.image = self.keeper_images[self.fil][self.col]
 
         elif self.game.selecting and not self.game.selecting_player:
-            if self.ind == len(self.images_list)-1:
-                self.ind=0
-                self.image=self.images_list[self.ind]
-                print(self.ind)
-            else:
-                self.ind+=1
-                self.image=self.images_list[self.ind]
-
-                print(self.ind)
-        elif self.game.selecting_player:
-            if self.col == len(self.player_images[self.fil])-1:
-                self.col=0
-                self.image=self.player_images[self.fil][self.col]
-                print(self.col)
-            else:
-                self.col+=1
-                self.image=self.player_images[self.fil][self.col]
-        elif self.Selecting_referee:
-            if self.ind == len(self.Referee_images ) - 1:
+            if self.ind == len(self.images_list) - 1:
                 self.ind = 0
-                self.image = self.Referee_images[self.ind]
-                print(self.ind)
+                self.image = self.images_list[self.ind]
             else:
                 self.ind += 1
-                self.image = self.Referee_images[self.ind]
+                self.image = self.images_list[self.ind]
+        elif self.game.selecting_player:
+            if self.col == len(self.player_images[self.fil]) - 1:
+                self.col = 0
+                self.image = self.player_images[self.fil][self.col]
+            else:
+                self.col += 1
+                self.image = self.player_images[self.fil][self.col]
 
     def animate_left(self):
-        keys= pg.key.get_pressed()
-        now= pg.time.get_ticks()
+        keys = pg.key.get_pressed()
+        now = pg.time.get_ticks()
 
         if self.selecting_keeper:
             if self.col == 0:
-                self.col=len(self.keeper_images[self.fil])-1
-                self.image=self.keeper_images[self.fil][self.col]
-                print(self.col)
+                self.col = len(self.keeper_images[self.fil]) - 1
+                self.image = self.keeper_images[self.fil][self.col]
             else:
-                self.col-=1
-                self.image=self.keeper_images[self.fil][self.col]
+                self.col -= 1
+                self.image = self.keeper_images[self.fil][self.col]
 
         elif self.game.selecting and not self.game.selecting_player:
             if self.ind == 0:
-                self.ind=len(self.images_list)-1
-                self.image=self.images_list[self.ind]
-                print(self.ind)
-            else:
-                self.ind-=1
-                self.image=self.images_list[self.ind]
-
-                print(self.ind)
-        elif self.game.selecting_player:
-            if self.col == 0:
-                self.col=len(self.player_images[self.fil])-1
-                self.image=self.player_images[self.fil][self.col]
-                print(self.col)
-            else:
-                self.col-=1
-                self.image=self.player_images[self.fil][self.col]
-        elif self.Selecting_referee:
-            if self.ind == 0:
-                self.ind = len(self.Referee_images ) - 1
-                self.image = self.Referee_images[self.ind]
-                print(self.ind)
+                self.ind = len(self.images_list) - 1
+                self.image = self.images_list[self.ind]
             else:
                 self.ind -= 1
-                self.image = self.Referee_images[self.ind]
+                self.image = self.images_list[self.ind]
+        elif self.game.selecting_player:
+            if self.col == 0:
+                self.col = len(self.player_images[self.fil]) - 1
+                self.image = self.player_images[self.fil][self.col]
+            else:
+                self.col -= 1
+                self.image = self.player_images[self.fil][self.col]
 
     def selection(self):
-        keys= pg.key.get_pressed()
-        now= pg.time.get_ticks()
+
+        keys = pg.key.get_pressed()
+        now = pg.time.get_ticks()
 
         if self.selecting_keeper:
-            if len(self.keepers)<1:
+            if len(self.keepers) < 1:
                 self.keepers.append(self.col)
             else:
-                self.selecting_keeper = False
-                self.select_referee()
-                self.game.Selecting_referee= True
+                self.game.showing = True
 
         elif self.game.selecting and not self.game.selecting_player:
 
-                if len(self.selected)<1:
+            if len(self.selected) < 1:
 
-                    self.selected.append(self.ind)
-                    self.game.header="Press Space to confirm!"
+                self.selected.append(self.ind)
+                self.game.header = "Press Space to confirm!"
 
-                elif len(self.selected)==1:
-                    self.game.text_ind=1
-                    self.game.selecting_player=True
-                    self.fil=self.ind
-                    self.image=self.player_images[self.fil][self.col]
-                    print(self.selected)
+            elif len(self.selected) == 1:
+                self.game.text_ind = 1
+                self.game.selecting_player = True
+                self.fil = self.ind
+                self.image = self.player_images[self.fil][self.col]
 
 
         elif self.game.selecting_player:
-            if len(self.team)==2 and (self.col!=self.team[-1] and self.col!=self.team[-2]):
-                self.team.append(self.col)
-                self.game.text_ind=-1
-                self.scroll_ind=0
 
-            elif len(self.team)<3:
+            if len(self.team) == 2 and (self.col != self.team[-1] and self.col != self.team[-2]):
+                self.team.append(self.col)
+                self.game.text_ind = -1
+                self.scroll_ind = 0
+
+            elif len(self.team) < 3:
                 try:
-                    if self.team[-1]== self.col or self.col== self.team[-2]:
-                        self.game.text_ind=3
+                    if self.team[-1] == self.col or self.col == self.team[-2]:
+                        self.game.text_ind = 3
                     else:
                         self.team.append(self.col)
-                        self.game.text_ind=1
+                        self.game.text_ind = 1
                         print(self.team)
 
                 except:
                     self.team.append(self.col)
                     print(self.team)
-                    self.game.text_ind=1
+                    self.game.text_ind = 1
 
-            elif len(self.team)==3:
+            elif len(self.team) == 3:
                 self.select_keeper()
-                self.selecting_keeper=True
-        #seleccionar un arbitro
-        elif self.game.Selecting_referee:
-            if len(self.Referees)<1:
-                self.Referees.append(self.ind)
-                self.game.header="Press Space to confirm!"
-
-            elif len(self.Referees)==1:
-                self.game.text_ind=6
-                self.game.showing=True
-                print(self.Referees, "Referee")
-
+                self.selecting_keeper = True
 
     def select_keeper(self):
-        self.col=0
-        self.image=self.keeper_images[self.fil][self.col]
-
-    def select_referee(self):
         self.col = 0
-        self.image = self.Referee_images[self.col]
+        self.image = self.keeper_images[self.fil][self.col]
 
     def scroll(self):
         keys= pg.key.get_pressed()
         now= pg.time.get_ticks()
         self.game.header="These are your players!"
+        if keys[pg.K_SPACE]:
+            self.finished = True
         if now- self.timer>500:
             self.timer= now
-
+            if keys[pg.K_SPACE]:
+                self.finished = True
             if self.scroll_ind==0:
                 self.image=self.player_images[self.fil][self.team[self.scroll_ind]]
                 self.scroll_ind+=1
 
             elif self.scroll_ind==len(self.team):
+
                 self.scroll_ind=0
                 self.image=self.keeper_images[self.fil][self.keepers[0]]
             else:

@@ -32,7 +32,6 @@ Player_Names=[  ["Lionel Messi","Neymar Jr.","Luis Suarez","Andres Iniesta","Piq
 
 Keeper_Names=[["Ter Stegen","Cillissen","Masip"],["Keylor Navas","Kiko Casilla","Ruben Yañez"],["Neuer","Ulreich","Starke"]]
 
-Referee_Names = ["Karina Martínez", "Eduardo Quiroga"]
 
 #Real Madrid
 REAL= "Seleccion/Real Madrid.png"
@@ -42,6 +41,6 @@ BARCELONA= "Seleccion/Barcelona.png"
 BAYERN= "Seleccion/Bayern.png"
 
 KEEPERS="Seleccion/Keepers.png"
-
+REFEREE = ""
 
 IMAGES=[(0,0,372,572)]
