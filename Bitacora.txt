@@ -25,3 +25,10 @@ Martes 6 de junio:
 	-Elaboración de la maqueta
 	-Creacion del repositorio remoto en GitHub
 	-Se finaliza la seccion de seleccion de jugadores
+
+Viernes 9 de junio:
+---------Karina---------------
+	-Creacion de la pantalla de Configuración final
+	-Seleccion de arbitros
+	-Mejoras a la interfaz de seleccion de equipos
+	-Seleccion de modo de cambio

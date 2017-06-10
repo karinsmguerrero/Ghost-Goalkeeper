@@ -71,12 +71,12 @@ def game_menu():
     """
     Display = True
     #Codigo por si acaso
-    #pygame.mixer.music.load('Sounds/UEFA_Champions_League_Anthem.ogg')
+    pygame.mixer.music.load('Sounds/UEFA_Champions_League_Anthem.ogg')
 
     # comprueba que no haya musica reproduciendose
-    #if pygame.mixer.music.get_busy() == False:
+    if pygame.mixer.music.get_busy() == False:
     # reproduce la musica, el -1 hace el bucle infinito
-     #   pygame.mixer.music.play(-1)
+        pygame.mixer.music.play(-1)
 
     GameDisplay.blit(Background, (0, 0))
 
@@ -86,12 +86,12 @@ def game_menu():
                 game_exit()
 
             Menu_bar = pygame.draw.rect(GameDisplay, Sky_blue, [0, 0, Display_width, 50])
-            button("Inicio", 0, 0, 100, 50, Sky_blue, Dark_blue, game_menu)
-            button("Acerca de", 100, 0, 100, 50, Sky_blue, Dark_blue, game_about)
+            button("Menu", 0, 0, 100, 50, Sky_blue, Dark_blue, game_menu)
+            button("Aboout", 100, 0, 100, 50, Sky_blue, Dark_blue, game_about)
 
             message_display('Ghost Goalkeeper', Title_Text, Display_width // 2, Display_height // 3)
 
-            button("Nueva partida", (Display_width // 2 - 100), 400, 200, 50, Dark_blue, Blue, game_settings)
+            button("New game", (Display_width // 2 - 100), 400, 200, 50, Dark_blue, Blue, game_settings)
 
         # actualizar la pantalla
 
@@ -214,7 +214,7 @@ def text_objects(text, font):
 
 #endregion
 
-def game_start(player1, player2):
+def game_start(player1, player2, change_mode):
     running = True
     GameDisplay.blit(Background, (0, 0))
     message_display("Game Seetings", Large_Text, Display_width // 2, 30)
@@ -239,7 +239,8 @@ def game_start(player1, player2):
     message_display(Player_Names[player1_logo][player1_team[0]], Large_Text, 200, 360)
     message_display(Player_Names[player1_logo][player1_team[1]], Large_Text, 200, 390)
     message_display(Player_Names[player1_logo][player1_team[2]], Large_Text, 200, 420)
-    message_display(Keeper_Names[player1_logo][player1_keeper[0]], Large_Text, 200, 460)
+    message_display(Keeper_Names[player1_logo][player1_keeper[0]], Large_Text, 200, 450)
+    message_display(change_mode[0], Large_Text, 200, 480)
 
     # Despliega el logo del equipo seleccionado por el jugador 1
     GameDisplay.blit(logo_sheet, (500, 130), (player2_logo * 200, 0, 200, 200))
@@ -247,7 +248,8 @@ def game_start(player1, player2):
     message_display(Player_Names[player2_logo][player1_team[0]], Large_Text, 600, 360)
     message_display(Player_Names[player2_logo][player2_team[1]], Large_Text, 600, 390)
     message_display(Player_Names[player2_logo][player2_team[2]], Large_Text, 600, 420)
-    message_display(Keeper_Names[player2_logo][player2_keeper[0]], Large_Text, 600, 460)
+    message_display(Keeper_Names[player2_logo][player2_keeper[0]], Large_Text, 600, 450)
+    message_display(change_mode[1], Large_Text, 600, 480)
 
     while running:
         for event in pygame.event.get():
@@ -255,6 +257,59 @@ def game_start(player1, player2):
                 game_exit()
         pygame.display.update()
         Clock.tick(30)
+
+def game_change_selector():
+    options = ["Auto", "Manual"]
+    Running = True
+    option = 0
+    mode_selected = []
+    GameDisplay.blit(Background, (0,0))
+    message_display("Choose the change mode for your team", Large_Text, Display_width//2, 100)
+
+    pygame.draw.rect(GameDisplay, Dark_blue, (250, 300, 100, 50))
+    message_display("Auto", Medium_Text, 300, 325)
+
+    pygame.draw.rect(GameDisplay, Sky_blue, (450, 300, 100, 50))
+    message_display("Manual", Medium_Text, 500, 325)
+
+    Current_player = 1
+    while Running:
+
+        if Current_player == 1:
+            message_display("Player 1", Large_Text, Display_width//2, 160)
+        elif Current_player == 2:
+            message_display("Player 2", Large_Text, Display_width // 2, 160)
+        for event in pygame.event.get():
+            if Current_player == 2:
+                message_display("Player 2", Large_Text, Display_width // 2, 160)
+            if event.type == pygame.QUIT:
+                game_exit()
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RIGHT:
+                    option = 1
+                    pygame.draw.rect(GameDisplay, Sky_blue, (250, 300, 100, 50))
+                    message_display("Auto", Medium_Text, 300, 325)
+
+                    pygame.draw.rect(GameDisplay, Dark_blue, (450, 300, 100, 50))
+                    message_display("Manual", Medium_Text, 500, 325)
+                elif event.key == pygame.K_LEFT:
+                    option = 0
+                    pygame.draw.rect(GameDisplay, Dark_blue, (250, 300, 100, 50))
+                    message_display("Auto", Medium_Text, 300, 325)
+
+                    pygame.draw.rect(GameDisplay, Sky_blue, (450, 300, 100, 50))
+                    message_display("Manual", Medium_Text, 500, 325)
+                elif event.key == pygame.K_SPACE:
+                    if Current_player == 1:
+                        mode_selected.append(options[option])
+                        Current_player = 2
+                    else:
+                        mode_selected.append(options[option])
+                        return mode_selected
+
+        pygame.display.update()
+        Clock.tick(30)
+
 
 def select_referee():
     Referee_Names = ["Karina Martínez", "Eduardo Quiroga"]
@@ -296,14 +351,15 @@ def game_settings():
     current_player = 1
     player_1_team = []
     player_2_team = []
+    change_mode = []
     while GameClass.running:
         if current_player == 2:
             if GameClass.finish:
                 player_2_team.append(GameClass.selector.selected)
                 player_2_team.append(GameClass.selector.team)
                 player_2_team.append(GameClass.selector.keepers)
-                print(player_2_team)
-                game_start(player_1_team, player_2_team)
+                change_mode = game_change_selector()
+                game_start(player_1_team, player_2_team, change_mode)
 
         GameClass.new()
 
@@ -311,7 +367,6 @@ def game_settings():
             player_1_team.append(GameClass.selector.selected)
             player_1_team.append(GameClass.selector.team)
             player_1_team.append(GameClass.selector.keepers)
-            print(player_1_team)
             GameClass.new()
             current_player = 2
 
@@ -319,3 +374,4 @@ def game_settings():
 game_menu()
 #select_referee()
 #game_start([0, [1,2,3],1],[2, [1,2,3], 0])
+#game_change_selector()
