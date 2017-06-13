@@ -1,7 +1,7 @@
 import pygame
 from Seleccion.Main import Game
 from Seleccion.Settings import *
-from Seleccion.Classes import Referee
+import random
 
 # Inicia modulo de pygame
 pygame.init()
@@ -27,7 +27,7 @@ Display_height = 500
 
 Title_Text = pygame.font.Font('Fonts/60s Scoreboard.ttf', 46)
 Small_Text = pygame.font.Font('Fonts/Exo-Medium.otf', 14)
-Medium_Text = pygame.font.Font('Fonts/Exo-Medium.otf', 18)
+Medium_Text = pygame.font.Font('Fonts/Exo-Medium.otf', 16)
 Large_Text = pygame.font.Font('Fonts/Exo-Medium.otf', 26)
 
 Clock = pygame.time.Clock()
@@ -87,7 +87,7 @@ def game_menu():
 
             Menu_bar = pygame.draw.rect(GameDisplay, Sky_blue, [0, 0, Display_width, 50])
             button("Menu", 0, 0, 100, 50, Sky_blue, Dark_blue, game_menu)
-            button("Aboout", 100, 0, 100, 50, Sky_blue, Dark_blue, game_about)
+            button("About", 100, 0, 100, 50, Sky_blue, Dark_blue, game_about)
 
             message_display('Ghost Goalkeeper', Title_Text, Display_width // 2, Display_height // 3)
 
@@ -110,10 +110,10 @@ def game_exit_confirmation():
     while Display:
         for event in pygame.event.get():
             GameDisplay.fill(Black)
-            message_display('¿Desea salir del juego?', Medium_Text, Display_width // 2, 200)
-            button("Salir", 30, 400, 100, 50, Turquoise, Bright_turquoise, game_exit)
-            button("Ir al inicio", 160, 400, 140, 50, Turquoise, Bright_turquoise, game_menu)
-            button("Reiniciar partida", 320, 400, 150, 50, Turquoise, Bright_turquoise, game_start)
+            message_display('Would you like to quit?', Medium_Text, Display_width // 2, 200)
+            button("Exit", 30, 400, 100, 50, Sky_blue, Dark_blue, game_exit)
+            button("Return to start menu", 160, 400, 140, 50, Sky_blue, Dark_blue, game_menu)
+            button("New game", 320, 400, 150, 50, Sky_blue, Dark_blue, game_start)
 
             # actualizar la pantalla
             pygame.display.update()
@@ -138,8 +138,8 @@ def game_about():
             GameDisplay.fill(Black)
             Menu_bar = pygame.draw.rect(GameDisplay, Sky_blue, [0, 0, Display_width, 50])
             # button(text, x_coord, y_coord, btn_widht, btn_height, color, hover_color, action=None)
-            button("Inicio", 0, 0, 100, 50, Sky_blue, Dark_blue, game_menu)
-            button("Acerca de", 100, 0, 100, 50, Sky_blue, Dark_blue, game_about)
+            button("Menu", 0, 0, 100, 50, Sky_blue, Dark_blue, game_menu)
+            button("About", 100, 0, 100, 50, Sky_blue, Dark_blue, game_about)
 
             message_display('Instituto Tecnológico de Costa rica', Small_Text, Display_width // 2, 100)
             message_display('Ingeniería en computadores', Small_Text, Display_width // 2, 120)
@@ -214,15 +214,20 @@ def text_objects(text, font):
 
 #endregion
 
-def game_start(player1, player2, change_mode):
+def game_start(player1, player2, change_mode, vs_selection):
     running = True
     GameDisplay.blit(Background, (0, 0))
     message_display("Game Settings", Large_Text, Display_width // 2, 30)
     #carga el spritesheet de los logos, importado de settings
     logo_sheet = pygame.image.load("Imgs/mini_logo_sheet.png")
-    logo_sheet.set_colorkey((255,9,255))
-    message_display("Player 1", Large_Text, 200, 100)
-    message_display("Player 2", Large_Text, 600, 100)
+    logo_sheet = logo_sheet.convert()
+    logo_sheet.set_colorkey((255,0,0))
+    message_display("Player 1", Large_Text, 200, 50)
+    message_display("Player 2", Large_Text, 600, 50)
+
+    message_display(vs_selection[0], Large_Text, 200, 90)
+    message_display(vs_selection[1], Large_Text, 600, 90)
+
     player1_logo = player1[0][0]
     player2_logo = player2[0][0]
 
@@ -231,25 +236,25 @@ def game_start(player1, player2, change_mode):
 
     player1_keeper = player1[2]
     player2_keeper = player2[2]
-    print(player1_logo, player1_team, player1_keeper)
 
     # Despliega el logo del equipo seleccionado por el jugador 1
-    GameDisplay.blit(logo_sheet, (100, 130), (player1_logo * 200, 0, 200, 200))
+    GameDisplay.blit(logo_sheet, (100, 110), (player1_logo * 200, 0, 200, 200))
+
     # Despliega los nombres de los jugadores, obteniendolos de una matriz importada de Settings
-    message_display(Player_Names[player1_logo][player1_team[0]], Large_Text, 200, 360)
-    message_display(Player_Names[player1_logo][player1_team[1]], Large_Text, 200, 390)
-    message_display(Player_Names[player1_logo][player1_team[2]], Large_Text, 200, 420)
-    message_display(Keeper_Names[player1_logo][player1_keeper[0]], Large_Text, 200, 450)
-    message_display(change_mode[0], Large_Text, 200, 480)
+    message_display(Player_Names[player1_logo][player1_team[0]], Large_Text, 200, 340)
+    message_display(Player_Names[player1_logo][player1_team[1]], Large_Text, 200, 370)
+    message_display(Player_Names[player1_logo][player1_team[2]], Large_Text, 200, 400)
+    message_display(Keeper_Names[player1_logo][player1_keeper[0]], Large_Text, 200, 430)
+    message_display(change_mode[0], Large_Text, 200, 460)
 
     # Despliega el logo del equipo seleccionado por el jugador 1
-    GameDisplay.blit(logo_sheet, (500, 130), (player2_logo * 200, 0, 200, 200))
+    GameDisplay.blit(logo_sheet, (500, 110), (player2_logo * 200, 0, 200, 200))
     # Despliega los nombres de los jugadores, obteniendolos de una matriz importada de Settings
-    message_display(Player_Names[player2_logo][player1_team[0]], Large_Text, 600, 360)
-    message_display(Player_Names[player2_logo][player2_team[1]], Large_Text, 600, 390)
-    message_display(Player_Names[player2_logo][player2_team[2]], Large_Text, 600, 420)
-    message_display(Keeper_Names[player2_logo][player2_keeper[0]], Large_Text, 600, 450)
-    message_display(change_mode[1], Large_Text, 600, 480)
+    message_display(Player_Names[player2_logo][player1_team[0]], Large_Text, 600, 340)
+    message_display(Player_Names[player2_logo][player2_team[1]], Large_Text, 600, 370)
+    message_display(Player_Names[player2_logo][player2_team[2]], Large_Text, 600, 400)
+    message_display(Keeper_Names[player2_logo][player2_keeper[0]], Large_Text, 600, 430)
+    message_display(change_mode[1], Large_Text, 600, 460)
 
     while running:
         for event in pygame.event.get():
@@ -310,11 +315,11 @@ def game_change_selector():
         pygame.display.update()
         Clock.tick(30)
 
-
 def select_referee():
     Referee_Names = ["Karina Martínez", "Eduardo Quiroga"]
     Referee_sheet = pygame.image.load("Imgs/referee_sheet.png")
-    Referee_sheet.set_colorkey((255,9,255))
+    Referee_sheet = Referee_sheet.convert()
+    Referee_sheet.set_colorkey((255,0,0))
 
     pos = 0
     running = True
@@ -361,7 +366,8 @@ def game_settings():
                 player_2_team.append(GameClass.selector.team)
                 player_2_team.append(GameClass.selector.keepers)
                 change_mode = game_change_selector()
-                game_start(player_1_team, player_2_team, change_mode)
+                vs = coin_animation()
+                game_start(player_1_team, player_2_team, change_mode, vs)
 
         GameClass.new()
 
@@ -372,9 +378,60 @@ def game_settings():
             GameClass.new()
             current_player = 2
 
+def coin_animation():
+    coin_img = pygame.image.load("Imgs/coin_flip.png")
+    coin_img = coin_img.convert()
+    coin_img.set_colorkey(Black)
+    coin = [0, 120, 230, 320, 360, 460, 0]
+    coin_size = [110, 120, 100, 42, 100, 100, 110]
+    coin_position = [280, 180, 80, 80, 180, 280, 280]
+
+    timer = 0
+
+    ind = 0
+    running = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                game_exit()
+        if ind == 0:
+            for i in range(0, len(coin)):
+
+                GameDisplay.blit(Background, (0,0))
+                message_display("Local vs. Visitor", Large_Text, Display_width//2, 40)
+                message_display("Player 1", Large_Text, 200, 200)
+                message_display("Player 2", Large_Text, 600, 200)
+                GameDisplay.blit(coin_img, (Display_width//2 - 50, coin_position[i]), (0, coin[i], 100, coin_size[i]))
+
+                pygame.display.update()
+                Clock.tick(7)
+
+            result = ["Local", "Visitor"]
+            choice = random.choice(result)
+            if choice == "Local":
+                result = ["Local", "Visitor"]
+                pygame.draw.rect(GameDisplay, Dark_blue, (145, 245, 110, 50))
+                pygame.draw.rect(GameDisplay, Dark_blue, (548, 245, 110, 50))
+                message_display("Local", Large_Text, 200, 270)
+                message_display("Visitor", Large_Text, 610, 270)
+            else:
+                result = ["Visitor", "Local"]
+                pygame.draw.rect(GameDisplay, Dark_blue, (145, 245, 110, 50))
+                pygame.draw.rect(GameDisplay, Dark_blue, (548, 245, 110, 50))
+                message_display("Local", Large_Text, 600, 270)
+                message_display("Visitor", Large_Text, 200, 270)
+            ind = 1
+
+        timer += 1
+        if timer == 1500:
+            running = False
+            return result
+
+        pygame.display.update()
 #-----------------MAIN-------------------------------
 game_menu()
 #select_referee()
-#game_start([0, [1,2,3],1],[2, [1,2,3], 0])
+#game_start([[0], [1,2,3],[1]],[[2], [1,2,3], [0]], ["Auto", "Auto"], ["Visitor", "Local"])
 #game_change_selector()
+#coin_animation()
 
