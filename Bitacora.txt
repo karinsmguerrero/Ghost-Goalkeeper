@@ -29,3 +29,8 @@ Martes 6 de junio:
 Viernes 9 de junio:
 ---------Karina---------------
 	-Implementación de la seleccion de jugadores con el menú de inicio
+
+Miercoles 14 de junio:
+---------Eduardo--------------
+	-Se crea el sistema para la eleccion aleatoria de las posiciones del portero
+	-Se crea la logica del sistema para la simulacion del tiro de penal
