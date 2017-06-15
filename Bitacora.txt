@@ -28,6 +28,7 @@ Martes 6 de junio:
 
 Viernes 9 de junio:
 ---------Karina---------------
+<<<<<<< HEAD
 	-Implementación de la seleccion de jugadores con el menú de 
 
 Sábado 10 de junio:
@@ -46,3 +47,7 @@ Miércoles 14 de junio:
 
 ---------Karina---------------
 	-Mejoras a la maqueta
+
+---------Eduardo--------------
+	-Se crea el sistema para la eleccion aleatoria de las posiciones del portero
+	-Se crea la logica del sistema para la simulacion del tiro de penal
