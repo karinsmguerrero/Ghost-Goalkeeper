@@ -28,4 +28,21 @@ Martes 6 de junio:
 
 Viernes 9 de junio:
 ---------Karina---------------
-	-Implementación de la seleccion de jugadores con el menú de inicio
+	-Implementación de la seleccion de jugadores con el menú de 
+
+Sábado 10 de junio:
+---------Karina---------------
+	-Se agrega la función de seleccion de cambio automático o manual de jugadores
+
+Lunes 12 de junio:
+---------Karina---------------
+	-Animación del lanzamiento de la moneda
+
+Martes 13 de junio:
+---------Karina---------------
+	-Se agrega la función de seleccion aleatoria de visitante y local para los equipos
+
+Miércoles 14 de junio:
+
+---------Karina---------------
+	-Mejoras a la maqueta

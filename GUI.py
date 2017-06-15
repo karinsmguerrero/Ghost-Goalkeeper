@@ -1,4 +1,3 @@
-import pygame
 from Seleccion.Main import Game
 from Seleccion.Settings import *
 import random
@@ -10,37 +9,9 @@ pygame.init()
 pygame.mixer.init()
 pygame.mixer.music.load('Sounds/UEFA_Champions_League_Anthem.ogg')
 
-# ------------------- VARIABLES PARA INTERFAZ --------------------------
-#region
-
-White = (255, 255, 255)
-Black = (0, 0, 0)
-Turquoise = (45, 195, 192)
-Bright_turquoise = (52, 237, 233)
-Blue = (10, 36, 118)
-Bright_blue = (0, 0, 255)
-Sky_blue = (112, 158, 210)
-Dark_blue = (22, 70, 136)
-
-Display_width = 800
-Display_height = 500
-
-Title_Text = pygame.font.Font('Fonts/60s Scoreboard.ttf', 46)
-Small_Text = pygame.font.Font('Fonts/Exo-Medium.otf', 14)
-Medium_Text = pygame.font.Font('Fonts/Exo-Medium.otf', 16)
-Large_Text = pygame.font.Font('Fonts/Exo-Medium.otf', 26)
-
-Clock = pygame.time.Clock()
-GameClass = Game()
-#endregion
-
-# ------------------------------ IMAGENES ---------------------------------
-Background = pygame.image.load('Imgs/stadium.png')
-
 # -------------------------------- DISPLAY ----------------------------------
 GameDisplay = pygame.display.set_mode((Display_width, Display_height))
-pygame.display.set_caption('Ghost Goalkeeper')
-
+pygame.display.set_caption(TITLE)
 
 # -------------------------------- MENU ------------------------------------
 def game_menu():
@@ -91,7 +62,7 @@ def game_menu():
 
             message_display('Ghost Goalkeeper', Title_Text, Display_width // 2, Display_height // 3)
 
-            button("New game", (Display_width // 2 - 100), 400, 200, 50, Dark_blue, Blue, game_settings)
+            button("New game", (Display_width // 2 - 100), 400, 200, 50, Dark_blue, Blue, game_set)
 
         # actualizar la pantalla
 
@@ -99,6 +70,7 @@ def game_menu():
         # reloj que controla los frames-per-second
         Clock.tick(30)
 
+GameClass = Game()
 #---------------------------GUI FUNCTIONS---------------------------
 #region
 def game_exit_confirmation():
@@ -111,14 +83,14 @@ def game_exit_confirmation():
         for event in pygame.event.get():
             GameDisplay.fill(Black)
             message_display('Would you like to quit?', Medium_Text, Display_width // 2, 200)
-            button("Exit", 30, 400, 100, 50, Sky_blue, Dark_blue, game_exit)
-            button("Return to start menu", 160, 400, 140, 50, Sky_blue, Dark_blue, game_menu)
-            button("New game", 320, 400, 150, 50, Sky_blue, Dark_blue, game_start)
+            button("Exit", 500, 300, 150, 50, Sky_blue, Dark_blue, game_exit)
+            button("Return to start menu", 150, 300, 150, 50, Sky_blue, Dark_blue, game_menu)
+            button("New game", 325, 300, 150, 50, Sky_blue, Dark_blue, game_set)
 
             # actualizar la pantalla
             pygame.display.update()
             # reloj que controla los frames-per-second
-            Clock.tick(30)
+            Clock.tick(20)
 
 def game_exit():
     pygame.mixer.music.stop()
@@ -129,12 +101,10 @@ def game_about():
     """ Objetivo: funcion que crea una ventana con informacion acerca del juego"""
 
     Display = True
-    Photo_Karina = pygame.image.load("Imgs/photo_karina.png")
-    Photo_Eduardo = pygame.image.load("Imgs/photo_eduardo.png")
     while Display:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                game_exit()
+                game_exit_confirmation()
             GameDisplay.fill(Black)
             Menu_bar = pygame.draw.rect(GameDisplay, Sky_blue, [0, 0, Display_width, 50])
             # button(text, x_coord, y_coord, btn_widht, btn_height, color, hover_color, action=None)
@@ -212,9 +182,7 @@ def text_objects(text, font):
     textSurface = font.render(text, True, White)
     return textSurface, textSurface.get_rect()
 
-#endregion
-
-def game_start(player1, player2, change_mode, vs_selection):
+def game_settings(player1, player2, change_mode, vs_selection):
     running = True
     GameDisplay.blit(Background, (0, 0))
     message_display("Game Settings", Large_Text, Display_width // 2, 30)
@@ -259,7 +227,7 @@ def game_start(player1, player2, change_mode, vs_selection):
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                game_exit()
+                game_exit_confirmation()
         pygame.display.update()
         Clock.tick(30)
 
@@ -288,7 +256,7 @@ def game_change_selector():
             if Current_player == 2:
                 message_display("Player 2", Large_Text, Display_width // 2, 160)
             if event.type == pygame.QUIT:
-                game_exit()
+                game_exit_confirmation()
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RIGHT:
                     option = 1
@@ -330,7 +298,7 @@ def select_referee():
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                game_exit()
+                game_exit_confirmation()
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
                     if pos == 0:
@@ -353,7 +321,7 @@ def select_referee():
         pygame.display.update()
         Clock.tick(30)
 
-def game_settings():
+def game_set():
     GameClass.REFEREE = select_referee()
     current_player = 1
     player_1_team = []
@@ -367,7 +335,7 @@ def game_settings():
                 player_2_team.append(GameClass.selector.keepers)
                 change_mode = game_change_selector()
                 vs = coin_animation()
-                game_start(player_1_team, player_2_team, change_mode, vs)
+                game_settings(player_1_team, player_2_team, change_mode, vs)
 
         GameClass.new()
 
@@ -393,7 +361,7 @@ def coin_animation():
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                game_exit()
+                game_exit_confirmation()
         if ind == 0:
             for i in range(0, len(coin)):
 
@@ -423,15 +391,23 @@ def coin_animation():
             ind = 1
 
         timer += 1
-        if timer == 1500:
+        if timer == 2000:
             running = False
             return result
 
         pygame.display.update()
+
+def game_team_statistics():
+    pass
+def game_reset_statistics():
+    pass
+
+# endregion
 #-----------------MAIN-------------------------------
-game_menu()
+#game_menu()
 #select_referee()
 #game_start([[0], [1,2,3],[1]],[[2], [1,2,3], [0]], ["Auto", "Auto"], ["Visitor", "Local"])
 #game_change_selector()
-#coin_animation()
+coin_animation()
+#game_exit_confirmation()
 

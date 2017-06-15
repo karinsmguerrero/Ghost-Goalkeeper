@@ -102,15 +102,13 @@ class Image(pg.sprite.Sprite):
         #Logos=LOGOS
         Logos = "Imgs/logo_sheet1.png"
         Logosheet= Spritesheet(Logos)
-        #self.images_list=[Logosheet.get_image(2,0,418,413),
-        #Logosheet.get_image(451,0,418,413),
-        #Logosheet.get_image(1223,8,418,413)]
+
         self.images_list = [Logosheet.get_image(0, 0, 400, 400),
                             Logosheet.get_image(400, 0, 400, 400),
                             Logosheet.get_image(800, 0, 400, 400)]
+
         for image in self.images_list:
             image.set_colorkey(RED)
-            #image.set_colorkey((0,0,255))
 
         #Jugadores
         Real= REAL
@@ -139,7 +137,7 @@ class Image(pg.sprite.Sprite):
                             [Bayern_sheet.get_image(0,0,418,413),Bayern_sheet.get_image(691,0,418,413),Bayern_sheet.get_image(1397,0,418,413),Bayern_sheet.get_image(1995,0,418,413),Bayern_sheet.get_image(2641,0,418,413),Bayern_sheet.get_image(3323,0,418,413),Bayern_sheet.get_image(4113,0,418,413)]]
 
                             #Barcelona
-        self.keeper_images=[[Keeper_sheet.get_image(1800,0,418,413),Keeper_sheet.get_image(2464,0,418,413                    ), Keeper_sheet.get_image(3339,0,418,413)],
+        self.keeper_images=[[Keeper_sheet.get_image(1800,0,418,413),Keeper_sheet.get_image(2464,0,418,413), Keeper_sheet.get_image(3339,0,418,413)],
                             #Real Madrid
                             [Keeper_sheet.get_image(0,0,418,413),Keeper_sheet.get_image(431,0,418,413),
                             Keeper_sheet.get_image(1210,2,418,413)],
@@ -265,6 +263,7 @@ class Image(pg.sprite.Sprite):
                 self.game.text_ind=2
                 self.select_keeper()
                 self.selecting_keeper = True
+
     def select_keeper(self):
         self.col = 0
         self.image = self.keeper_images[self.fil][self.col]
@@ -272,7 +271,7 @@ class Image(pg.sprite.Sprite):
     def scroll(self):
         keys= pg.key.get_pressed()
         now= pg.time.get_ticks()
-        self.game.header="Player 2: Select your players!"
+        self.game.header= "Player 2: Select your players!"
 
         if now- self.timer>0:
             self.timer= now
