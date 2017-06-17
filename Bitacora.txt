@@ -34,3 +34,9 @@ Miercoles 14 de junio:
 ---------Eduardo--------------
 	-Se crea el sistema para la eleccion aleatoria de las posiciones del portero
 	-Se crea la logica del sistema para la simulacion del tiro de penal
+
+Viernes 16 de junio:
+---------Eduardo--------------
+	-Se hacen modificaciones mayores a la programación
+	-Se implementa el sistema de tiro de penales con las posiciones aleatorias del portero
+	-Se comienza con la documentación de la parte de programación
