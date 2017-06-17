@@ -28,9 +28,26 @@ Martes 6 de junio:
 
 Viernes 9 de junio:
 ---------Karina---------------
-	-Implementación de la seleccion de jugadores con el menú de inicio
+<<<<<<< HEAD
+	-Implementación de la seleccion de jugadores con el menú de 
 
-Miercoles 14 de junio:
+Sábado 10 de junio:
+---------Karina---------------
+	-Se agrega la función de seleccion de cambio automático o manual de jugadores
+
+Lunes 12 de junio:
+---------Karina---------------
+	-Animación del lanzamiento de la moneda
+
+Martes 13 de junio:
+---------Karina---------------
+	-Se agrega la función de seleccion aleatoria de visitante y local para los equipos
+
+Miércoles 14 de junio:
+
+---------Karina---------------
+	-Mejoras a la maqueta
+
 ---------Eduardo--------------
 	-Se crea el sistema para la eleccion aleatoria de las posiciones del portero
 	-Se crea la logica del sistema para la simulacion del tiro de penal
@@ -40,3 +57,4 @@ Viernes 16 de junio:
 	-Se hacen modificaciones mayores a la programación
 	-Se implementa el sistema de tiro de penales con las posiciones aleatorias del portero
 	-Se comienza con la documentación de la parte de programación
+

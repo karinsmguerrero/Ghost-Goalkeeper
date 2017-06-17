@@ -106,9 +106,17 @@ class Image(pg.sprite.Sprite):
         #Logos
         Logos=LOGOS
         Logosheet= Spritesheet(Logos)
+<<<<<<< HEAD
         self.images_list=[Logosheet.get_image(2,0,418,413),
         Logosheet.get_image(451,0,418,413),
         Logosheet.get_image(1223,8,418,413)]
+=======
+
+        self.images_list = [Logosheet.get_image(0, 0, 400, 400),
+                            Logosheet.get_image(400, 0, 400, 400),
+                            Logosheet.get_image(800, 0, 400, 400)]
+
+>>>>>>> 55b0e8c074813b28e17355f1ef0701d9434989df
         for image in self.images_list:
             image.set_colorkey(RED)
 
@@ -139,7 +147,7 @@ class Image(pg.sprite.Sprite):
                             [Bayern_sheet.get_image(0,0,418,413),Bayern_sheet.get_image(691,0,418,413),Bayern_sheet.get_image(1397,0,418,413),Bayern_sheet.get_image(1995,0,418,413),Bayern_sheet.get_image(2641,0,418,413),Bayern_sheet.get_image(3323,0,418,413),Bayern_sheet.get_image(4113,0,418,413)]]
 
                             #Barcelona
-        self.keeper_images=[[Keeper_sheet.get_image(1800,0,418,413),Keeper_sheet.get_image(2464,0,418,413                    ), Keeper_sheet.get_image(3339,0,418,413)],
+        self.keeper_images=[[Keeper_sheet.get_image(1800,0,418,413),Keeper_sheet.get_image(2464,0,418,413), Keeper_sheet.get_image(3339,0,418,413)],
                             #Real Madrid
                             [Keeper_sheet.get_image(0,0,418,413),Keeper_sheet.get_image(431,0,418,413),
                             Keeper_sheet.get_image(1210,2,418,413)],
@@ -324,6 +332,14 @@ class Image(pg.sprite.Sprite):
                     self.selecting_keeper=True
 
 
+<<<<<<< HEAD
+=======
+            elif len(self.team) == 3:
+                self.game.text_ind=2
+                self.select_keeper()
+                self.selecting_keeper = True
+
+>>>>>>> 55b0e8c074813b28e17355f1ef0701d9434989df
     def select_keeper(self):
         if self.selecting_team1:
             self.col=0
@@ -332,6 +348,7 @@ class Image(pg.sprite.Sprite):
     def scroll(self):
         keys= pg.key.get_pressed()
         now= pg.time.get_ticks()
+<<<<<<< HEAD
         self.game.header="These are your players!"
         if self.selecting_team1:
             if now- self.timer>500:
@@ -349,3 +366,25 @@ class Image(pg.sprite.Sprite):
                     self.scroll_ind+=1
         elif self.selecting_team2:
             pass
+=======
+        self.game.header= "Player 2: Select your players!"
+
+        if now- self.timer>0:
+            self.timer= now
+
+            if keys[pg.K_SPACE]:
+                self.finished = True
+"""
+            if self.scroll_ind==0:
+                self.image=self.player_images[self.fil][self.team[self.scroll_ind]]
+                self.scroll_ind+=1
+
+            elif self.scroll_ind==len(self.team):
+
+                self.scroll_ind=0
+                self.image=self.keeper_images[self.fil][self.keepers[0]]
+            else:
+                self.image=self.player_images[self.fil][self.team[self.scroll_ind]]
+                self.scroll_ind+=1
+"""
+>>>>>>> 55b0e8c074813b28e17355f1ef0701d9434989df
