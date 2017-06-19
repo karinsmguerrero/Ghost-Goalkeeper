@@ -74,3 +74,9 @@ Domingo 18 de junio:
 	-Por falta de un cargador de 12 V, se usa un USB de 5 a 9 V
 ---------Eduardo--------------
 	-Se finaliza con la parte de programación y se sube a GitHub
+Lunes 19 de junio:
+---------Eduardo--------------
+	-Se finaliza con la documentacion del codigo
+	-Se entrega la documentacion del codigo
+	-Se sube a GitHub el codigo nuevamente con algunas correcciones
+	-Se escribe el archivo Readme
