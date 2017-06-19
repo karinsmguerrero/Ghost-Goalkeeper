@@ -6,72 +6,6 @@ from Settings import *
 vec= pg.math.Vector2
 
 
-
-
-class Team:
-    def __init__(self,Name, Players, Keepers):
-        pg.sprite.Sprite.__init__(self)
-
-        self.name= str(Name)
-        self.players= Players
-        self.keepers= Keepers
-        self.playing= []  #range(0,7) #Una posicion del rango para cada jugador
-        self.keeping= []  #range(0,3) #Una posicion del rango para cada portero
-        self.banner= "" #Imagen del escudo
-
-    def add_player(self, Num):
-        if len(self.playing)<3:
-            self.playing.append(self.players[Num])
-        else:
-            return "You have 3 players in your playing team!"
-
-    def add_keeper(self, Num):
-        if len(self.keeping)<1:
-            self.keeping.append(self.keepers[Num])
-        else:
-            return "You already have a keeper!"
-
-
-class Player:
-    def __init__(self,Name, Number, Tag=""):
-        pg.sprite.Sprite.__init__(self)
-
-        self.name= str(Name)
-        self.number= Number
-        self.tag= Tag
-        self.image= ""#Imagen del jugador
-    #Assigned Ball
-    #self.ball= Ball(x,y)
-
-    def shoot_ball(self):
-        #
-        #
-        #
-        #
-        #
-        pass
-
-class Ball:
-    def __init__(self, x ,y):
-        pg.sprite.Sprite.__init__(self)
-
-        self.pos= vec(x,y)
-        self.vel= vec(0,0)
-        #self.dir=
-
-class Keeper:
-    def __init__(self, Name, Number, Tag=""):
-        pg.sprite.Sprite.__init__(self)
-
-        self.name= str(Name)
-        self.number= Number
-        self.tag= Tag
-        self.image= "" #Imagen del jugador
-        self.save_dir=0
-
-    def catch_ball(self):
-        self.save_dir= random.randrange(0,6)
-
 class Image(pg.sprite.Sprite):
     def __init__(self, game, x, y, Team, fil=0, col=0):
         pg.sprite.Sprite.__init__(self)
@@ -87,16 +21,14 @@ class Image(pg.sprite.Sprite):
         self.selecting_team2=False
         self.load_images()
         self.image= self.images_list[self.ind]
-        self.image.set_colorkey(RED)
-
-        pg.transform.scale(self.image,(40,40))
-
         self.rect= self.image.get_rect()
         self.rect.center= vec(x,y)
         self.timer=0
         self.team1=[]
         self.selected1=[]
         self.keepers1=[]
+
+        self.team=[]
 
         self.team2=[]
         self.selected2=[]
@@ -106,19 +38,18 @@ class Image(pg.sprite.Sprite):
         #Logos
         Logos=LOGOS
         Logosheet= Spritesheet(Logos)
-<<<<<<< HEAD
-        self.images_list=[Logosheet.get_image(2,0,418,413),
-        Logosheet.get_image(451,0,418,413),
-        Logosheet.get_image(1223,8,418,413)]
-=======
 
-        self.images_list = [Logosheet.get_image(0, 0, 400, 400),
-                            Logosheet.get_image(400, 0, 400, 400),
-                            Logosheet.get_image(800, 0, 400, 400)]
+        Barcelona=Logosheet.get_image(0,0,418,418)
 
->>>>>>> 55b0e8c074813b28e17355f1ef0701d9434989df
+        Barcelona.set_colorkey(COLORKEY)
+
+        self.images_list=[Barcelona,
+        Logosheet.get_image(515-((811-515)/2)/2,0,418,418),
+        Logosheet.get_image(921,0,418,418)]
+
         for image in self.images_list:
-            image.set_colorkey(RED)
+            image.set_colorkey((255,9,255))
+
 
         #Jugadores
         Real= REAL
@@ -147,7 +78,7 @@ class Image(pg.sprite.Sprite):
                             [Bayern_sheet.get_image(0,0,418,413),Bayern_sheet.get_image(691,0,418,413),Bayern_sheet.get_image(1397,0,418,413),Bayern_sheet.get_image(1995,0,418,413),Bayern_sheet.get_image(2641,0,418,413),Bayern_sheet.get_image(3323,0,418,413),Bayern_sheet.get_image(4113,0,418,413)]]
 
                             #Barcelona
-        self.keeper_images=[[Keeper_sheet.get_image(1800,0,418,413),Keeper_sheet.get_image(2464,0,418,413), Keeper_sheet.get_image(3339,0,418,413)],
+        self.keeper_images=[[Keeper_sheet.get_image(1800,0,418,413),Keeper_sheet.get_image(2464,0,418,413                    ), Keeper_sheet.get_image(3339,0,418,413)],
                             #Real Madrid
                             [Keeper_sheet.get_image(0,0,418,413),Keeper_sheet.get_image(431,0,418,413),
                             Keeper_sheet.get_image(1210,2,418,413)],
@@ -332,23 +263,14 @@ class Image(pg.sprite.Sprite):
                     self.selecting_keeper=True
 
 
-<<<<<<< HEAD
-=======
-            elif len(self.team) == 3:
-                self.game.text_ind=2
-                self.select_keeper()
-                self.selecting_keeper = True
-
->>>>>>> 55b0e8c074813b28e17355f1ef0701d9434989df
     def select_keeper(self):
         if self.selecting_team1:
             self.col=0
             self.image=self.keeper_images[self.fil][self.col]
-
+            self.team=self.team1
     def scroll(self):
         keys= pg.key.get_pressed()
         now= pg.time.get_ticks()
-<<<<<<< HEAD
         self.game.header="These are your players!"
         if self.selecting_team1:
             if now- self.timer>500:
@@ -366,25 +288,134 @@ class Image(pg.sprite.Sprite):
                     self.scroll_ind+=1
         elif self.selecting_team2:
             pass
-=======
-        self.game.header= "Player 2: Select your players!"
 
-        if now- self.timer>0:
-            self.timer= now
 
-            if keys[pg.K_SPACE]:
-                self.finished = True
-"""
-            if self.scroll_ind==0:
-                self.image=self.player_images[self.fil][self.team[self.scroll_ind]]
-                self.scroll_ind+=1
+class Ref_Selector(pg.sprite.Sprite):
+    def __init__(self, game, x, y):
+        pg.sprite.Sprite.__init__(self)
+        self.game=game
+        Logos=LOGOS
+        self.pos= vec(x,y)
+        self.ind=0
+        self.selected=False
+        self.load_images()
+        self.image= self.images_list[self.ind]
 
-            elif self.scroll_ind==len(self.team):
+        pg.transform.scale(self.image,(40,40))
 
-                self.scroll_ind=0
-                self.image=self.keeper_images[self.fil][self.keepers[0]]
+        self.rect= self.image.get_rect()
+        self.rect.center= vec(x,y)
+        self.timer=0
+        self.referee=[]
+
+
+    def load_images(self):
+        Refs= Spritesheet(REFEREES)
+
+        self.images_list=[Refs.get_image(0,0,400,400),Refs.get_image(400,0,400,400)]
+
+        for image in self.images_list:
+            image.set_colorkey(COLORKEY)
+
+
+
+
+    def animate_right(self):
+        keys= pg.key.get_pressed()
+        now= pg.time.get_ticks()
+
+        if now-self.timer>250 and not self.selected:
+            self.timer=now
+            if self.ind==len(self.images_list)-1:
+                self.ind=0
+                self.image= self.images_list[self.ind]
             else:
-                self.image=self.player_images[self.fil][self.team[self.scroll_ind]]
-                self.scroll_ind+=1
-"""
->>>>>>> 55b0e8c074813b28e17355f1ef0701d9434989df
+                self.ind+=1
+                self.image= self.images_list[self.ind]
+
+
+    def animate_left(self):
+        keys= pg.key.get_pressed()
+        now= pg.time.get_ticks()
+        if now-self.timer>250 and not self.selected:
+            self.timer=now
+            if self.ind==0:
+                self.ind=len(self.images_list)-1
+                self.image= self.images_list[self.ind]
+            else:
+                self.ind-=1
+                self.image= self.images_list[self.ind]
+
+
+    def selection(self):
+        keys= pg.key.get_pressed()
+        now= pg.time.get_ticks()
+
+        if now-self.timer>250:
+            self.selected=True
+            self.referee.append(self.ind)
+
+
+class Coin(pg.sprite.Sprite):
+
+    def __init__(self, game, x, y):
+        pg.sprite.Sprite.__init__(self)
+        self.game=game
+        self.pos= vec(x,y)
+        self.ind=0
+        self.load_images()
+        self.image= self.images_list[self.ind]
+        self.rect= self.image.get_rect()
+        self.rect.center= vec(x,y)
+        self.timer=0
+        self.down=False
+        self.stall=False
+
+
+    def load_images(self):
+
+        Coin_sheet= Spritesheet("coin_flip.png")
+
+        self.images_list=[Coin_sheet.get_image(0,0,98,98),Coin_sheet.get_image(0,124,98,219-124),Coin_sheet.get_image(0,245,98,309-245),
+        Coin_sheet.get_image(0,333,98,359-333),Coin_sheet.get_image(0,383,98,447-383),Coin_sheet.get_image(0,470,98,566)]
+
+        for image in self.images_list:
+            image.set_colorkey(BLACK)
+
+
+    def animate(self):
+        now= pg.time.get_ticks()
+
+
+        if self.pos.y>600:
+            self.stall=True
+
+
+        elif now-self.timer>50 and self.pos.y>=250 and not self.down:
+            self.timer=now
+            if self.ind!=len(self.images_list)-1:
+                self.ind+=1
+                self.image= self.images_list[self.ind]
+                self.pos.y-=20
+                self.rect.center=self.pos
+            else:
+                self.ind=0
+                self.image= self.images_list[self.ind]
+                self.pos.y-=20
+                self.rect.center=self.pos
+
+
+        elif now-self.timer>50 and (self.pos.y<250 or self.down):
+            self.down=True
+
+            self.timer=now
+            if self.ind!=len(self.images_list)-1:
+                self.ind+=1
+                self.image= self.images_list[self.ind]
+                self.pos.y+=20
+                self.rect.center=self.pos
+            else:
+                self.ind=0
+                self.image= self.images_list[self.ind]
+                self.pos.y+=20
+                self.rect.center=self.pos

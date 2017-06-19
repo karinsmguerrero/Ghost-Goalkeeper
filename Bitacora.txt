@@ -63,8 +63,14 @@ Viernes 16 de junio:
 Sábado 17 de junio:
 ---------Karina---------------
 	-Armar el circuito
+---------Eduardo--------------
+	-Se finaliza toda la lógica de la programación
+	-Se avanza en la documentación de la parte de programación
+
 	
 Domingo 18 de junio:
 ---------Karina---------------
 	-Finalización del circuito
 	-Por falta de un cargador de 12 V, se usa un USB de 5 a 9 V
+---------Eduardo--------------
+	-Se finaliza con la parte de programación y se sube a GitHub
