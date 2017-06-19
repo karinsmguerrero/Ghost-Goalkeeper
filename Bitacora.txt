@@ -28,7 +28,6 @@ Martes 6 de junio:
 
 Viernes 9 de junio:
 ---------Karina---------------
-<<<<<<< HEAD
 	-Implementación de la seleccion de jugadores con el menú de 
 
 Sábado 10 de junio:
@@ -51,3 +50,17 @@ Miércoles 14 de junio:
 ---------Eduardo--------------
 	-Se crea el sistema para la eleccion aleatoria de las posiciones del portero
 	-Se crea la logica del sistema para la simulacion del tiro de penal
+
+Miércoles 14 de junio:
+---------Karina---------------
+	-Conexión de arduino con python
+	-Instalación de la libreria Pyserial
+
+Sábado 17 de junio:
+---------Karina---------------
+	-Armar el circuito
+	
+Domingo 18 de junio:
+---------Karina---------------
+	-Finalización del circuito
+	-Por falta de un cargador de 12 V, se usa un USB de 5 a 9 V
